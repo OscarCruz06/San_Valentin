@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Milena</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Playfair Display', serif;
+  overflow-x:hidden;
+  overflow-y:auto;
+  color:white;
+}
+
+/* FONDO DESENFOCADO */
+.fondo{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:url("fondo.gif") center/cover no-repeat;
+  filter:blur(10px);
+  z-index:-2;
+}
+
+.overlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.65);
+  z-index:-1;
+}
+
+/* CONTENEDOR GENERAL CENTRADO */
+.container{
+  min-height:100vh;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+  flex-direction:column;
+}
+
+/* ANIMACIÓN INICIO */
+.inicio-elegante{
+  animation:fadeInicio 2s ease forwards;
+}
+
+@keyframes fadeInicio{
+  from{opacity:0; transform:scale(1.1);}
+  to{opacity:1; transform:scale(1);}
+}
+
+/* NOMBRE */
+.nombre{
+  font-size:55px;
+  letter-spacing:8px;
+  margin-bottom:10px;
+  text-shadow:0 0 25px rgba(255,255,255,0.8);
+}
+
+/* SUBTÍTULO */
+.subtitulo{
+  font-size:22px;
+  margin-bottom:35px;
+  letter-spacing:3px;
+  opacity:0.9;
+}
+
+/* BOTÓN */
+button{
+  padding:15px 45px;
+  border:1px solid white;
+  background:transparent;
+  color:white;
+  border-radius:50px;
+  font-size:18px;
+  cursor:pointer;
+  transition:0.5s;
+  box-shadow:0 0 20px rgba(255,255,255,0.4);
+}
+
+button:hover{
+  background:white;
+  color:black;
+  box-shadow:0 0 40px rgba(255,255,255,0.8);
+}
+
+/* CARTELERA */
+#cartelera{
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:rgba(255,255,255,0.95);
+  color:#99004d;
+  padding:40px;
+  border-radius:20px;
+  width:90%;
+  max-width:650px;
+  transform:scale(0);
+  transition:1.5s;
+  box-shadow:0 0 60px rgba(255,255,255,0.3);
+  margin:auto;
+}
+
+/* ENCABEZADO */
+.encabezado-romantico{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:20px;
+  margin-bottom:25px;
+  opacity:0;
+  animation:aparecerEncabezado 1.5s ease forwards;
+  animation-delay:0.5s;
+}
+
+.titulo-cartel{
+  font-size:26px;
+  font-weight:700;
+  letter-spacing:3px;
+}
+
+.linea{
+  width:80px;
+  height:1px;
+  background:#99004d;
+  opacity:0.6;
+}
+
+@keyframes aparecerEncabezado{
+  from{
+    opacity:0;
+    transform:translateY(-15px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* MENSAJE */
+.mensaje{
+  font-size:20px;
+  line-height:1.6;
+  min-height:120px;
+}
+
+/* CONTADOR */
+.contador{
+  margin-top:20px;
+  font-size:18px;
+}
+
+/* GALERÍA */
+.galeria{
+  display:flex;
+  gap:15px;
+  margin-top:25px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.galeria img{
+  width:120px;
+  height:160px;
+  object-fit:cover;
+  border-radius:10px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:1s;
+}
+
+/* RESPONSIVE */
+@media (max-width:768px){
+
+  .nombre{
+    font-size:38px;
+    letter-spacing:4px;
+  }
+
+  .subtitulo{
+    font-size:18px;
+  }
+
+  #cartelera{
+    padding:25px;
+  }
+
+  .titulo-cartel{
+    font-size:20px;
+  }
+
+  .mensaje{
+    font-size:17px;
+  }
+
+  .contador{
+    font-size:15px;
+  }
+
+  .galeria img{
+    width:90px;
+    height:120px;
+  }
+
+  button{
+    padding:12px 30px;
+    font-size:16px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="fondo"></div>
+<div class="overlay"></div>
+
+<audio id="musica" loop>
+  <source src="tu-cancion.mp3" type="audio/mpeg">
+</audio>
+
+<!-- INICIO -->
+<div id="inicio" class="container inicio-elegante">
+  <div class="nombre">😝MILENA💖</div>
+  <div class="subtitulo">Feliz 14 de Febrero</div>
+  <button onclick="iniciar()">Toca aquí</button>
+</div>
+
+<!-- CARTELERA -->
+<div id="cartelera" class="container">
+
+  <div class="encabezado-romantico">
+    <div class="linea"></div>
+    <div class="titulo-cartel">Feliz 14 de Febrero</div>
+    <div class="linea"></div>
+  </div>
+
+  <div id="texto" class="mensaje"></div>
+  <div class="contador" id="contador"></div>
+
+  <div class="galeria">
+    <img src="foto1.jpg">
+    <img src="foto2.jpg">
+    <img src="foto3.jpg">
+  </div>
+
+</div>
+
+<script>
+
+const fechaInicio = new Date("2021-03-22");
+
+function iniciar(){
+  const musica = document.getElementById("musica");
+  if(musica) musica.play();
+
+  document.getElementById("inicio").style.display="none";
+
+  let cartel = document.getElementById("cartelera");
+  cartel.style.display="flex";
+
+  setTimeout(()=>{
+    cartel.style.transform="scale(1)";
+    escribirMensaje();
+    mostrarContador();
+    mostrarFotos();
+  },200);
+}
+
+const mensaje = `Milena, mi niña…
+
+Gracias por estos casi 5 años que han sido los más hermosos de mi vida.
+
+Eres lo más lindo que he vivido, la persona que transformó mis días en algo especial.
+
+Gracias por cada momento, por cada risa, por cada abrazo,
+porque amo profundamente compartir mi tiempo contigo.
+
+Contigo todo tiene sentido.
+Y si pudiera elegir de nuevo, siempre te elegiría a ti.`;
+
+function escribirMensaje(){
+  let i=0;
+  function escribir(){
+    if(i<mensaje.length){
+      document.getElementById("texto").innerHTML+=mensaje.charAt(i);
+      i++;
+      setTimeout(escribir,40);
+    }
+  }
+  escribir();
+}
+
+function mostrarContador(){
+  const hoy = new Date();
+  const diferencia = hoy - fechaInicio;
+  const dias = Math.floor(diferencia / (1000*60*60*24));
+  document.getElementById("contador").innerHTML =
+    "Han pasado " + dias + " días desde que comenzó nuestra historia.";
+}
+
+function mostrarFotos(){
+  const fotos = document.querySelectorAll(".galeria img");
+  fotos.forEach((foto, index)=>{
+    setTimeout(()=>{
+      foto.style.opacity="1";
+      foto.style.transform="translateY(0)";
+    }, index * 800);
+  });
+}
+
+</script>
+
+</body>
+</html>
